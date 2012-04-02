@@ -39,5 +39,7 @@ end
 # gem 'ruby-debug'
 
 gem "devise"
+gem "omniauth-facebook"
+
 gem "jquery-rails"
 gem "haml", ">= 3.0.0"
