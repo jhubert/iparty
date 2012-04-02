@@ -1,3 +1,6 @@
 // Place all the styles related to the general controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#btn-fb-login { display: block; width: 150px; height: 22px; background-image: url(/assets/facebook_signin.png); background-position: 0 0; overflow: hidden; text-indent: -9999px; }
+#btn-fb-login:hover { background-position: 0 46px }

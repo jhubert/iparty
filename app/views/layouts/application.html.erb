@@ -1,14 +1,52 @@
 <!DOCTYPE html>
+
 <html>
 <head>
   <title>iParty</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <meta charset="utf-8">
+
+  <%= stylesheet_link_tag "application", :media => "all" %>
+  <%= yield :more_styles %>
   <%= javascript_include_tag "application" %>
+  <%= yield :more_scripts %>
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <div class="row">
+          <div class="span4"><%= link_to 'iParty', root_path, :class => 'brand' %></div>
+          <div class="span4" style="text-align: center">&nbsp;</div>
+          <div class="span4">
+            <div class="nav-collapse">
+              <ul class="nav pull-right">
+                <% if user_signed_in? %>
+                <li><%= link_to "Hi #{current_user.first_name}!", '#' %></li>
+                <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+                <% else %>
+                <li><%= link_to "Sign in with Facebook", '/users/auth/facebook' %></li>
+                <% end %>
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div>
+        </div>
+      </div><!-- /.container -->
+    </div><!-- /navbar inner -->
+  </div> <!-- /navbar-fixed-top -->
 
-<%= yield %>
+  <div class="container">
+    <% if user_signed_in? %>
+        <%= link_to t('.logout'), destroy_user_session_path, :method => :delete %>
+    <% else %>
+        <%= link_to t('.login_with_facebook'), '/users/auth/facebook', :id => 'btn-fb-login' %>
+    <% end %>
 
+    <%= yield %>
+
+    <footer>
+      <p><small>Facebook buttons by <a href="http://www.komodomedia.com/blog/2009/06/sign-in-with-twitter-facebook-and-openid/">Komodo Media</a>.</small></p>
+    </footer>
+  </div> <!-- /container -->
 </body>
 </html>
