@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  fbid: MyString
+  name: MyString
+  start_time: 2012-04-02 08:24:56
+  end_time: 2012-04-02 08:24:56
+  venue_fbid: MyString
+  venue_name: MyString
+  venue_latitude: 1.5
+  venue_longitude: 1.5
+
+two:
+  fbid: MyString
+  name: MyString
+  start_time: 2012-04-02 08:24:56
+  end_time: 2012-04-02 08:24:56
+  venue_fbid: MyString
+  venue_name: MyString
+  venue_latitude: 1.5
+  venue_longitude: 1.5

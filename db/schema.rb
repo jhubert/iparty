@@ -10,7 +10,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120402055819) do
+ActiveRecord::Schema.define(:version => 20120402082456) do
+
+  create_table "events", :force => true do |t|
+    t.string   "fbid"
+    t.string   "name"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.string   "venue_fbid"
+    t.string   "venue_name"
+    t.float    "venue_latitude"
+    t.float    "venue_longitude"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
