@@ -45,3 +45,7 @@ gem "jquery-rails"
 
 gem 'bootstrap-sass', '~> 2.0.0'
 gem 'twitter_bootstrap_form_for', :git => 'git://github.com/rilya/twitter_bootstrap_form_for.git'
+
+
+# Handles the payment processing via www.stripe.com
+gem 'stripe'
