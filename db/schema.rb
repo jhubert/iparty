@@ -10,20 +10,25 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120402082456) do
+ActiveRecord::Schema.define(:version => 20120402085351) do
 
   create_table "events", :force => true do |t|
-    t.string   "fbid"
+    t.integer  "user_id"
+    t.string   "facebook_eid"
     t.string   "name"
+    t.string   "image_url"
     t.datetime "start_time"
     t.datetime "end_time"
-    t.string   "venue_fbid"
+    t.string   "venue_facebook_vid"
     t.string   "venue_name"
     t.float    "venue_latitude"
     t.float    "venue_longitude"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
+
+  add_index "events", ["facebook_eid"], :name => "index_events_on_facebook_eid"
+  add_index "events", ["user_id"], :name => "index_events_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -41,9 +46,12 @@ ActiveRecord::Schema.define(:version => 20120402082456) do
     t.string   "gender"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
+    t.string   "facebook_uid"
+    t.string   "facebook_access_token"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["facebook_access_token"], :name => "index_users_on_facebook_access_token", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
 end

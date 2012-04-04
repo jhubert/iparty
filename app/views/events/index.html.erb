@@ -1,0 +1,10 @@
+<% if @events.empty? %>
+  <h1>You haven't created any Facebook events.  :-/</h1>
+<% else %>
+  <h1>Pick a party</h1>
+  <table class='table table-striped table-bordered'>
+    <% @events.each do |event| %>
+      <tr><td><%= link_to event['name'], "?facebook_eid=#{event['eid']}", :method => :post  %></td></tr>
+    <% end %>
+  </table>
+<% end %>
