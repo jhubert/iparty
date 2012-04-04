@@ -48,3 +48,6 @@ gem 'twitter_bootstrap_form_for', :git => 'git://github.com/rilya/twitter_bootst
 
 # For facebook
 gem 'koala', '> 1.1'
+
+# Handles the payment processing via www.stripe.com
+gem 'stripe'
