@@ -2,7 +2,7 @@
 <p><code><%= @event.inspect %></code></p>
 
 <div class="well">
-  <%= form_tag event_update_donation_amount_path(@event), :class => 'form-inline' %>
+  <%= form_tag update_donation_amount_event_path(@event), :class => 'form-inline' %>
     <label>How many dollars do you want people to donate?</label><br>
     <%= select_tag :donation_amount, options_for_select(0..50, @event.donation_amount), :class => 'span1' %>
     <button class="btn btn-primary">Save</button>
