@@ -1,10 +1,12 @@
+FACEBOOK = YAML::load(File.open("#{Rails.root}/config/facebook.yml"))[Rails.env.to_s]
+#raise YAML::load(File.open("#{Rails.root}/config/facebook.yml")).inspect
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class with default "from" parameter.
-  config.mailer_sender = "please-change-me-at-config-initializers-devise@example.com"
+  config.mailer_sender = "iparty@illanti.com"
 
   # Configure the class responsible to send e-mails.
   # config.mailer = "Devise::Mailer"
@@ -213,7 +215,7 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
 
   require "omniauth-facebook"
-  config.omniauth :facebook, "366366173407802", "72c87ae6b6460af979a3c3cfe98e20f8",
+  config.omniauth :facebook, FACEBOOK['app_id'], FACEBOOK['app_secret'],
     :scope => 'email,user_events,offline_access'
 
   # ==> Warden configuration
