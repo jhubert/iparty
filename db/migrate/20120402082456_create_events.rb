@@ -3,6 +3,7 @@ class CreateEvents < ActiveRecord::Migration
     create_table :events do |t|
       t.integer   :user_id
       t.string    :facebook_eid
+      t.string    :facebook_owner_id
       t.string    :name
       t.string    :image_url
       t.datetime  :start_time
@@ -11,7 +12,6 @@ class CreateEvents < ActiveRecord::Migration
       t.string    :venue_name
       t.float     :venue_latitude
       t.float     :venue_longitude
-
       t.timestamps
     end
     add_index :events, :user_id

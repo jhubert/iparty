@@ -1,0 +1,12 @@
+<h2>Which event are you at?</h2>
+<% if @events %>
+  <table class='table table-striped table-bordered'>
+    <% @events.each do |event| %>
+    <tr><td><%= link_to event['name'], guest_party_path(:id => event['id'])  %></td></tr>
+    <% end %>
+  </table>
+<% else %>
+  <p>It doesn't look like you have any facebook events that are going on right now.</p>
+  <p>If we were being smart about it, we would probably do a venue search to find venues around the geocoordinates and what events they have right now. Then we would let you pick the event.</p>
+  <p>But, we're not being that smart yet, so.. you're off the hook. No donation necessary. :)</p>
+<% end %>

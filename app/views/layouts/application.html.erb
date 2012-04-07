@@ -10,6 +10,7 @@
   <%= javascript_include_tag "application" %>
   <%= yield :more_scripts %>
   <%= csrf_meta_tags %>
+  <%= yield :head %>
 </head>
 <body>
   <div class="navbar navbar-fixed-top">
@@ -36,17 +37,14 @@
   </div> <!-- /navbar-fixed-top -->
 
   <div class="container">
-    <% if user_signed_in? %>
-        <%= link_to t('.logout'), destroy_user_session_path, :method => :delete %>
-    <% else %>
-        <%= link_to t('.login_with_facebook'), '/users/auth/facebook', :id => 'btn-fb-login' %>
-    <% end %>
-
+    <%= flashes :error, :notice %>
     <%= yield %>
-
     <footer>
-      <p><small>Facebook buttons by <a href="http://www.komodomedia.com/blog/2009/06/sign-in-with-twitter-facebook-and-openid/">Komodo Media</a>.</small></p>
+<!--      <p><small>Facebook buttons by <a href="http://www.komodomedia.com/blog/2009/06/sign-in-with-twitter-facebook-and-openid/">Komodo Media</a>.</small></p> //-->
     </footer>
   </div> <!-- /container -->
+  <script type="text/javascript" charset="utf-8">
+    App.run('<%= "#{controller_name}_#{action_name}" %>');
+  </script>
 </body>
 </html>

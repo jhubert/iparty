@@ -10,8 +10,42 @@ class User < ActiveRecord::Base
 
   has_many :events, :dependent => :destroy
 
+  has_many :donations
+
+  after_create :setup_stripe_customer
+
   def full_name
     [first_name, last_name].join(' ')
+  end
+
+  def has_card_on_file?
+    has_active_card?
+  end
+
+  def create_event_from_facebook_eid(eid)
+    koala = Koala::Facebook::API.new(facebook_access_token)
+    Event.create_from_facebook_graph_and_facebook_eid(koala, eid, :user_id => id)
+  end
+
+  def update_stripe_customer(custom_attrs = {})
+    attrs = {
+      :email => email,
+      :description => full_name,
+      :token => nil
+    }
+    attrs.merge!(custom_attrs)
+
+    customer = Stripe::Customer.retrieve(customer_id)
+    customer.email = attrs[:email]
+    customer.description = attrs[:description]
+    customer.token = attrs[:token]
+
+    if customer.save 
+      update_attribute(:has_active_card, true) if attrs[:token].present?
+      return true
+    else
+      return false
+    end
   end
 
   class << self
@@ -42,4 +76,17 @@ class User < ActiveRecord::Base
     end
   end
 
+  private
+
+  def setup_stripe_customer(custom_attrs = {})
+    attrs = {
+      :email => email,
+      :description => full_name
+    }
+    attrs.merge!(custom_attrs)
+
+    customer = Stripe::Customer.create(attrs)
+
+    update_attribute(:stripe_customer_id, customer.id) if customer
+  end
 end

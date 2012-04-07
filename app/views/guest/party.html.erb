@@ -1,0 +1,12 @@
+<%= debug @event %>
+
+<%= form_tag guest_charge_path(:id => @event.facebook_eid) %>
+  <% if @event.donation_amount.present? %>
+    <p>The donation amount is <%= number_to_currency(@event.donation_amount) %>. Would you like to donate?</p>
+    <%= submit_tag 'Yes!', :class => 'btn btn-primary' %>
+  <% else %>
+    <p>How much would you like to donate?</p>
+    <p><input type="text" name="amount" class="span1"></p>
+    <%= submit_tag 'Do it!', :class => 'btn btn-primary' %>
+  <% end %>
+</form>

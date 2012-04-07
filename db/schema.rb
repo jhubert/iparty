@@ -10,11 +10,33 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120402085351) do
+ActiveRecord::Schema.define(:version => 20120406162636) do
+
+  create_table "donations", :force => true do |t|
+    t.integer  "event_id"
+    t.integer  "user_id"
+    t.string   "currency_code"
+    t.string   "description"
+    t.string   "card_last_4"
+    t.string   "card_exp_year"
+    t.string   "card_exp_month"
+    t.string   "card_type"
+    t.string   "card_country"
+    t.string   "card_cvc_check"
+    t.boolean  "paid",           :default => false
+    t.boolean  "refunded",       :default => false
+    t.string   "processor_id"
+    t.string   "amount"
+    t.string   "fee"
+    t.text     "raw_data"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+  end
 
   create_table "events", :force => true do |t|
     t.integer  "user_id"
     t.string   "facebook_eid"
+    t.string   "facebook_owner_id"
     t.string   "name"
     t.string   "image_url"
     t.datetime "start_time"
@@ -25,6 +47,7 @@ ActiveRecord::Schema.define(:version => 20120402085351) do
     t.float    "venue_longitude"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
+    t.integer  "donation_amount"
   end
 
   add_index "events", ["facebook_eid"], :name => "index_events_on_facebook_eid"
@@ -48,6 +71,8 @@ ActiveRecord::Schema.define(:version => 20120402085351) do
     t.datetime "updated_at",                             :null => false
     t.string   "facebook_uid"
     t.string   "facebook_access_token"
+    t.string   "stripe_customer_id"
+    t.boolean  "has_active_card"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

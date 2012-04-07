@@ -1,0 +1,11 @@
+<% if @facebook_events.empty? %>
+  <h1>We couldn't find any unused Facebook events</h1>
+  <p>Before you can use Partytronic to charge for an event, you have to <a href="https://www.facebook.com/events">make the event in Facebook</a>.</p>
+<% else %>
+  <h1>Pick a party</h1>
+  <table class='table table-striped table-bordered'>
+    <% @facebook_events.each do |event| %>
+      <tr><td><%= link_to event['name'], events_path(:facebook_eid => event['eid']), :method => :post  %></td></tr>
+    <% end %>
+  </table>
+<% end %>

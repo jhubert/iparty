@@ -1,1 +1,14 @@
-<code><%= @event.inspect %></code>
+<h2><%= @event.name %></h2>
+<p><code><%= @event.inspect %></code></p>
+
+<div class="well">
+  <%= form_tag event_update_donation_amount_path(@event), :class => 'form-inline' %>
+    <label>How many dollars do you want people to donate?</label><br>
+    <%= select_tag :donation_amount, options_for_select(0..50, @event.donation_amount), :class => 'span1' %>
+    <button class="btn btn-primary">Save</button>
+  </form>
+</div>
+
+<div class="well">
+  <p>Share this link in order for people to donate: <%= link_to guest_party_url(@event.facebook_eid), guest_party_path(@event.facebook_eid) %></p>
+</div>

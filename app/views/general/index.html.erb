@@ -1,5 +1,16 @@
-<h1>General#index</h1>
-<p>Find me in app/views/general/index.html.erb</p>
+<% if user_signed_in? %>
+<p><%= link_to 'Check in to a party', guest_path %></p>
 
+<p><%= link_to 'Manage a party', events_path %></p>
 
-<%= debug current_user %>
+<h2>Your Donations</h2>
+  <table class='table table-striped table-bordered'>
+    <% current_user.donations.each do |donation| %>
+    <tr><td><%= donation.inspect %></td></tr>
+    <% end %>
+  </table>
+<% else %>
+<h1>Welcome</h1>
+
+<%= link_to "Sign in with Facebook", '/users/auth/facebook' %>
+<% end %>
