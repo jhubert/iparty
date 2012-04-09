@@ -8,6 +8,7 @@ class GuestController < ApplicationController
   def party
     @event = Event.find_by_facebook_eid(params[:id])
     @event = Event.create_from_facebook_graph_and_facebook_eid(fb_graph, params[:id]) unless @event.present?
+    redirect_to guest_path, :notice => 'We could not find that event. Make sure you are invited to it on facebook.' unless @event
   end
 
   def payment

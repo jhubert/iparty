@@ -2,32 +2,53 @@ class Event < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :user_id, :facebook_eid, :name, :image_url, :start_time, :end_time, :venue_facebook_vid, :venue_name, :venue_latitude, :venue_longitude, :donation_amount, :facebook_owner_id
 
-  validates_presence_of :facebook_eid, :venue_facebook_vid
+  validates_presence_of :facebook_eid
 
   belongs_to :user
 
   def self.create_from_facebook_graph_and_facebook_eid(koala, eid, attrs = {})
     # TODO: what happens if the event doesn't exist?
-    fb_event_data = koala.get_object(eid)
+    begin
+      fb_event_data = koala.get_object(eid)
+    rescue
+      fb_event_data = nil
+    end
 
-    # TODO: what happens if a venue doesn't exist?
-    fb_venue_data = koala.get_object(fb_event_data['venue']['id'])
+    if fb_event_data.present?
+      attrs.reverse_merge!(
+        :facebook_eid       => fb_event_data['id'],
+        :facebook_owner_id  => fb_event_data['owner'] && fb_event_data['owner']['id'],
+        :name               => fb_event_data['name'],
+        :image_url          => fb_event_data['pic'],
+        :start_time         => fb_event_data['start_time'],
+        :end_time           => fb_event_data['end_time']
+      )
 
-    # Merge the data, but don't override the passed in attributes
-    attrs.reverse_merge!(
-      :facebook_eid       => fb_event_data['id'],
-      :facebook_owner_id  => fb_event_data['owner'] && fb_event_data['owner']['id'],
-      :name               => fb_event_data['name'],
-      :image_url          => fb_event_data['pic'],
-      :start_time         => fb_event_data['start_time'],
-      :end_time           => fb_event_data['end_time'],
-      :venue_facebook_vid => fb_venue_data['id'],
-      :venue_name         => fb_venue_data['name'],
-      :venue_latitude     => fb_venue_data['location']['latitude'],
-      :venue_longitude    => fb_venue_data['location']['longitude']
-    )
+      # TODO: what happens if a venue doesn't exist?
+      if fb_event_data['venue']['id'].present?
+        fb_venue_data = koala.get_object(fb_event_data['venue']['id'])
+      elsif fb_event_data['venue']['name'].present?
+        fb_venue_data = fb_event_data['venue']
+        fb_venue_data['name'] ||= ([fb_venue_data['street'], fb_venue_data['city'], fb_venue_data['country']].join(', '))
+      else
+        fb_venue_data = {
+          'name' => 'Unknown'
+        }
+      end
 
-    Event.create(attrs)
+      attrs.reverse_merge!({
+        :venue_facebook_vid => fb_venue_data['id'],
+        :venue_name         => fb_venue_data['name'],
+        :venue_latitude     => fb_venue_data['location'] && fb_venue_data['location']['latitude'],
+        :venue_longitude    => fb_venue_data['location'] && fb_venue_data['location']['longitude']
+      })
+
+      # Merge the data, but don't override the passed in attributes
+
+      return Event.create(attrs)
+    else
+      return false
+    end
   end
 
   def donate_with_user(user, amount = nil)
