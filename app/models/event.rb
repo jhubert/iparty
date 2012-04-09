@@ -31,7 +31,7 @@ class Event < ActiveRecord::Base
         :facebook_eid       => fb_event_data['id'],
         :facebook_owner_id  => fb_event_data['owner'] && fb_event_data['owner']['id'],
         :name               => fb_event_data['name'],
-        :image_url          => fb_event_data['pic'],
+        :image_url          => koala.get_picture(fb_event_data['id'],{'type'=>'large'}),
         :start_time         => fb_event_data['start_time'],
         :end_time           => fb_event_data['end_time'],
         :venue_facebook_vid => fb_venue_data['id'],
