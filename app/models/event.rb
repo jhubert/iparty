@@ -34,7 +34,7 @@ class Event < ActiveRecord::Base
     amount ||= donation_amount
 
     attrs = {
-      :card => user.stripe_customer_id,
+      :customer => user.stripe_customer_id,
       :amount => amount.to_i * 100
     }
 
@@ -63,8 +63,6 @@ class Event < ActiveRecord::Base
 
     begin
       charge = Stripe::Charge.create(attrs)
-
-      logger.debug charge
 
       return Donation.create_from_user_and_event_and_stripe_data(user, self, charge)
     rescue Stripe::CardError => error

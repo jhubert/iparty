@@ -30,7 +30,7 @@ class GuestController < ApplicationController
     if params[:stripe_card_token].present?
       if params[:save_card_details].present?
         logger.debug "Adding card details"
-        current_user.update_customer(:token => params[:strip_card_token])
+        current_user.update_stripe_customer(:token => params[:stripe_card_token])
       else
         logger.debug "Create donation from stripe token"
         @donation = @event.donate_with_user_and_stripe_token(current_user, params[:stripe_card_token], params[:amount])

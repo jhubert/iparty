@@ -27,18 +27,17 @@ class User < ActiveRecord::Base
     Event.create_from_facebook_graph_and_facebook_eid(koala, eid, :user_id => id)
   end
 
-  def update_stripe_customer(custom_attrs = {})
-    attrs = {
+  def update_stripe_customer(attrs = {})
+    attrs.reverse_merge!({
       :email => email,
       :description => full_name,
       :token => nil
-    }
-    attrs.merge!(custom_attrs)
+    })
 
-    customer = Stripe::Customer.retrieve(customer_id)
+    customer = Stripe::Customer.retrieve(stripe_customer_id)
     customer.email = attrs[:email]
     customer.description = attrs[:description]
-    customer.token = attrs[:token]
+    customer.card = attrs[:token]
 
     if customer.save 
       update_attribute(:has_active_card, true) if attrs[:token].present?
@@ -51,7 +50,7 @@ class User < ActiveRecord::Base
   class << self
     def find_for_facebook_oauth(omniauth_hash, signed_in_resource=nil)
       data = omniauth_hash.extra.raw_info
-      logger.debug data
+
       if user = User.where(:email => data.email).first
         user
       else # Create a user with a stub password.
@@ -78,12 +77,11 @@ class User < ActiveRecord::Base
 
   private
 
-  def setup_stripe_customer(custom_attrs = {})
-    attrs = {
+  def setup_stripe_customer(attrs = {})
+    attrs.reverse_merge!({
       :email => email,
       :description => full_name
-    }
-    attrs.merge!(custom_attrs)
+    })
 
     customer = Stripe::Customer.create(attrs)
 
