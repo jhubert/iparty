@@ -1,5 +1,4 @@
 <h2><%= @event.name %></h2>
-<p><code><%= @event.inspect %></code></p>
 
 <div class="well">
   <%= form_tag update_donation_amount_event_path(@event), :class => 'form-inline' %>
@@ -12,3 +11,5 @@
 <div class="well">
   <p>Share this link in order for people to donate: <%= link_to guest_party_url(@event.facebook_eid), guest_party_path(@event.facebook_eid) %></p>
 </div>
+
+<p><code><%= @event.inspect %></code></p>

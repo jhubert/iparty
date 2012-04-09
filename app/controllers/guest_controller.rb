@@ -15,16 +15,6 @@ class GuestController < ApplicationController
     @event = Event.find_by_facebook_eid(params[:id])
   end
 
-  # TODO: Clean this up!
-  # 
-  # Does the user have a customer_id already?
-  # Have new card details been submitted
-  #  - Are we allowed to save the card details?
-  #    - save them
-  #  - Charge it
-  # Does the user already have a card on file?
-  #  - charge it
-  # D
   def charge
     @event = Event.find_by_facebook_eid(params[:id])
 
