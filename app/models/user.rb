@@ -22,8 +22,12 @@ class User < ActiveRecord::Base
     has_active_card?
   end
 
+  # returns a Koala object for making authenticated fb api calls
+  def koala
+    return Koala::Facebook::API.new(facebook_access_token)
+  end
+
   def create_event_from_facebook_eid(eid)
-    koala = Koala::Facebook::API.new(facebook_access_token)
     Event.create_from_facebook_graph_and_facebook_eid(koala, eid, :user_id => id)
   end
 

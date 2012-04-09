@@ -2,12 +2,12 @@ class GuestController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @events = fb_graph.get_connections('me', 'events')
+    @events = current_user.koala.get_connections('me', 'events')
   end
 
   def party
     @event = Event.find_by_facebook_eid(params[:id])
-    @event = Event.create_from_facebook_graph_and_facebook_eid(fb_graph, params[:id]) unless @event.present?
+    @event = Event.create_from_facebook_graph_and_facebook_eid(current_user.koala, params[:id]) unless @event.present?
   end
 
   def payment

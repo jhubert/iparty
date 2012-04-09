@@ -46,7 +46,7 @@ class EventsController < ApplicationController
                 WHERE eid IN (SELECT eid FROM event_member WHERE uid=me()) 
                 AND creator=me()"
 
-    @facebook_events = fb_graph.fql_query(fb_query)
+    @facebook_events = current_user.koala.fql_query(fb_query)
 
     # create an array of the existing event ids
     existing_events = current_user.events.collect(&:facebook_eid)
