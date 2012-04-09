@@ -216,7 +216,7 @@ Devise.setup do |config|
 
   require "omniauth-facebook"
   config.omniauth :facebook, FACEBOOK['app_id'], FACEBOOK['app_secret'],
-    :scope => 'email,user_events,offline_access'
+    :scope => 'email,user_events,friends_events,offline_access'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
