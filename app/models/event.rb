@@ -15,15 +15,6 @@ class Event < ActiveRecord::Base
     end
 
     if fb_event_data.present?
-      attrs.reverse_merge!(
-        :facebook_eid       => fb_event_data['id'],
-        :facebook_owner_id  => fb_event_data['owner'] && fb_event_data['owner']['id'],
-        :name               => fb_event_data['name'],
-        :image_url          => fb_event_data['pic'],
-        :start_time         => fb_event_data['start_time'],
-        :end_time           => fb_event_data['end_time']
-      )
-
       # TODO: what happens if a venue doesn't exist?
       if fb_event_data['venue']['id'].present?
         fb_venue_data = koala.get_object(fb_event_data['venue']['id'])
@@ -37,6 +28,12 @@ class Event < ActiveRecord::Base
       end
 
       attrs.reverse_merge!({
+        :facebook_eid       => fb_event_data['id'],
+        :facebook_owner_id  => fb_event_data['owner'] && fb_event_data['owner']['id'],
+        :name               => fb_event_data['name'],
+        :image_url          => fb_event_data['pic'],
+        :start_time         => fb_event_data['start_time'],
+        :end_time           => fb_event_data['end_time'],
         :venue_facebook_vid => fb_venue_data['id'],
         :venue_name         => fb_venue_data['name'],
         :venue_latitude     => fb_venue_data['location'] && fb_venue_data['location']['latitude'],
