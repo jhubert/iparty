@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 <head>
   <title>iParty</title>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <%= stylesheet_link_tag "application", :media => "all" %>
   <%= yield :more_styles %>
@@ -15,11 +16,10 @@
 <body>
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
-      <div class="container">
-        <div class="row">
+      <div class="container-fluid">
+        <div class="row-fluid">
           <div class="span4"><%= link_to 'iParty', root_path, :class => 'brand' %></div>
-          <div class="span4" style="text-align: center">&nbsp;</div>
-          <div class="span4">
+          <div class="span8">
             <div class="nav-collapse">
               <ul class="nav pull-right">
                 <% if user_signed_in? %>
@@ -36,7 +36,7 @@
     </div><!-- /navbar inner -->
   </div> <!-- /navbar-fixed-top -->
 
-  <div class="container">
+  <div class="container-fluid">
     <%= flashes :error, :notice %>
     <%= yield %>
     <footer>
